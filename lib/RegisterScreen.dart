@@ -1,11 +1,31 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:task1/widgets/gradient_button.dart';
 import 'package:task1/widgets/login_field.dart';
 import 'package:task1/widgets/social_button.dart';
 import 'package:task1/login_screen.dart'; // Import the LoginScreen
+import 'package:http/http.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key});
+  RegisterScreen({super.key});
+  final TextEditingController name = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  void signup() async {
+    try {
+      Response response = await post(Uri.parse('https://reqres.in/api/login'),
+          body: {'name': name, 'email': email, 'password': password});
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body.toString());
+        print('Login successfully');
+      } else {
+        print('failed');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +60,16 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15),
-              const LoginField(hintText: 'Name'), // Add name input field
+              LoginField(
+                  hintText: 'Name', controller: name), // Add name input field
               const SizedBox(height: 15),
-              const LoginField(hintText: 'Email'),
+              LoginField(hintText: 'Email', controller: email),
               const SizedBox(height: 15),
-              const LoginField(hintText: 'Password'),
+              LoginField(hintText: 'Password', controller: password),
               const SizedBox(height: 20),
-              const GradientButton(
+              GradientButton(
                 textInput: "register",
+                pressHandle: signup,
               ),
               const SizedBox(height: 20),
               Row(

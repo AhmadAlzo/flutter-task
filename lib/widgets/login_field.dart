@@ -3,11 +3,13 @@ import 'package:task1/pallete.dart';
 
 class LoginField extends StatelessWidget {
   final String hintText;
+  final TextEditingController? controller;
 
   const LoginField({
-    super.key,
+    Key? key,
     required this.hintText,
-  });
+    this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class LoginField extends StatelessWidget {
         maxWidth: 400,
       ),
       child: TextFormField(
+        controller: controller, // Assign the controller here
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(27),
           enabledBorder: OutlineInputBorder(
